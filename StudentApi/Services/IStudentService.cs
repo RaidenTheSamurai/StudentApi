@@ -1,12 +1,13 @@
-﻿using StudentApi.Models;
+﻿using StudentApi.Dtos;
+using StudentApi.Models;
 namespace StudentApi.Services
 {
     public interface IStudentService
     {
-        public Task<List<Student>> GetAllStudentsAsync();
-        public Task<Student> GetStudentByIdAsync(int id);
-        public Task<Student> AddStudentAsync(Student student);
-        public Task<Student> UpdateStudentAsync(int id, Student student);
-        public Task<Student?> DeleteStudentAsync(int id);
+        public Task<List<StudentResponse>> GetAllStudentsAsync();
+        public Task<StudentResponse?> GetStudentByIdAsync(int id);
+        public Task<StudentResponse> AddStudentAsync(Student student);
+        public Task<StudentResponse> UpdateStudentAsync(int id, Student student);
+        public Task<StudentResponse?> DeleteStudentAsync(int id);
     }
 }

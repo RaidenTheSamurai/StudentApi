@@ -1,27 +1,44 @@
-﻿using StudentApi.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentApi.Data;
+using StudentApi.Dtos;
+using StudentApi.Models;
 namespace StudentApi.Services
 {
-    public class StudentService : IStudentService
+    public class StudentService(AppDbContext context) : IStudentService
     {
-        private readonly List<Student> _students = new List<Student>();
 
-        public async Task<Student> AddStudentAsync(Student student)
+
+
+        public async Task<StudentResponse> AddStudentAsync(Student student)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Student> DeleteStudentAsync(int id)
+        public async Task<StudentResponse?> DeleteStudentAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Student>> GetAllStudentsAsync()
-            => await Task.FromResult(_students);
+        public async Task<List<StudentResponse>> GetAllStudentsAsync()
+            => await context.Students.Select(s => new StudentResponse {
 
-        public async Task<Student?> GetStudentByIdAsync(int id)
-            => await Task.FromResult(_students.FirstOrDefault(s => s.Id == id));
+                Name = s.Name,
+                Age = s.Age,
+            }).ToListAsync();
 
-        public async Task<Student> UpdateStudentAsync(int id, Student student)
+        public async Task<StudentResponse?> GetStudentByIdAsync(int id)
+        {
+            var result = await context.Students
+                .Where(s => s.Id == id)
+                .Select(s => new StudentResponse
+            {
+                Name = s.Name,
+                Age = s.Age,
+            } ).FirstOrDefaultAsync();
+            return result;
+        }
+
+        public async Task<StudentResponse> UpdateStudentAsync(int id, Student student)
         {
             throw new NotImplementedException();
         }
