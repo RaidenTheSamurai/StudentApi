@@ -8,6 +8,6 @@ namespace StudentApi.Services
         public Task<StudentResponse?> GetStudentByIdAsync(int id);
         public Task<StudentResponse> AddStudentAsync(CreateStudentRequest student);
         public Task<bool> UpdateStudentAsync(int id, UpdateStudentRequest student);
-        public Task<StudentResponse?> DeleteStudentAsync(int id);
+        public Task<bool> DeleteStudentAsync(int id);
     }
 }

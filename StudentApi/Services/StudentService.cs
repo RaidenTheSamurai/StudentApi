@@ -27,9 +27,16 @@ namespace StudentApi.Services
             };
         }
 
-        public async Task<StudentResponse?> DeleteStudentAsync(int id)
+        public async Task<bool> DeleteStudentAsync(int id)
         {
-            throw new NotImplementedException();
+            var studentToDelete = await context.Students.FindAsync(id);
+            if (studentToDelete is null)
+                return false;
+
+           context.Students.Remove(studentToDelete);
+            await context.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<List<StudentResponse>> GetAllStudentsAsync()
@@ -54,12 +61,12 @@ namespace StudentApi.Services
 
         public async Task<bool> UpdateStudentAsync(int id, UpdateStudentRequest student)
         {
-            var existingStudent = await context.Students.FindAsync(id);
-            if (existingStudent != null) 
+            var studentToUpdate = await context.Students.FindAsync(id);
+            if (studentToUpdate is null) 
                 return false;
 
-            existingStudent.Name = student.Name;
-            existingStudent.Age= student.Age;
+            studentToUpdate.Name = student.Name;
+            studentToUpdate.Age= student.Age;
 
             await context.SaveChangesAsync();
             

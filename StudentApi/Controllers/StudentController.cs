@@ -48,7 +48,7 @@ namespace StudentApi.Controllers
         public async Task<ActionResult<Student>> DeleteStudent(int id)
         {
             var deletedStudent = await service.DeleteStudentAsync(id);
-            if (deletedStudent is null)
+            if (!deletedStudent)
                 return NotFound("Student in given Id is not found");
             return Ok(deletedStudent);
         }
