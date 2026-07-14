@@ -34,13 +34,15 @@ namespace StudentApi.Services
                 return false;
 
            context.Students.Remove(studentToDelete);
-            await context.SaveChangesAsync();
+           await context.SaveChangesAsync();
 
-            return true;
+           return true;
         }
 
         public async Task<List<StudentResponse>> GetAllStudentsAsync()
-            => await context.Students.Select(s => new StudentResponse {
+            => await context.Students
+            .AsNoTracking()
+            .Select(s => new StudentResponse {
                 Id = s.Id,
                 Name = s.Name,
                 Age = s.Age,

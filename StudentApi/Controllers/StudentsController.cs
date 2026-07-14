@@ -1,23 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentApi.Dtos;
-using StudentApi.Models;
 using StudentApi.Services;
 
 namespace StudentApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController(IStudentService service) : ControllerBase
+    public class StudentsController(IStudentService service) : ControllerBase
     {
 
         [HttpGet]
 
-        public async Task<ActionResult<List<Student>>> GetAllStudents()
+        public async Task<ActionResult<List<StudentResponse>>> GetAllStudents()
             => Ok(await service.GetAllStudentsAsync());
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudentById(int id)
+        public async Task<ActionResult<StudentResponse>> GetStudentById(int id)
         {
             var student = await service.GetStudentByIdAsync(id);
             if (student is null)
@@ -27,7 +25,7 @@ namespace StudentApi.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<Student>> AddStudent(CreateStudentRequest student)
+        public async Task<ActionResult<StudentResponse>> AddStudent(CreateStudentRequest student)
         {
             var addedStudent = await service.AddStudentAsync(student);
             return CreatedAtAction(nameof(GetStudentById), new { id = addedStudent.Id }, addedStudent);
@@ -45,12 +43,12 @@ namespace StudentApi.Controllers
 
         [HttpDelete("{id}")]
 
-        public async Task<ActionResult<Student>> DeleteStudent(int id)
+        public async Task<ActionResult<bool>> DeleteStudent(int id)
         {
             var deletedStudent = await service.DeleteStudentAsync(id);
             if (!deletedStudent)
                 return NotFound("Student in given Id is not found");
-            return Ok(deletedStudent);
+            return NoContent();
         }
     }
 }
