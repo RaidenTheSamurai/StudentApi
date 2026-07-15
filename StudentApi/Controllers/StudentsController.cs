@@ -43,10 +43,10 @@ namespace StudentApi.Controllers
 
         [HttpDelete("{id}")]
 
-        public async Task<ActionResult<bool>> DeleteStudent(int id)
+        public async Task<ActionResult> DeleteStudent(int id)
         {
             var deletedStudent = await service.DeleteStudentAsync(id);
-            if (!deletedStudent)
+            if (deletedStudent == false)
                 return NotFound("Student in given Id is not found");
             return NoContent();
         }
